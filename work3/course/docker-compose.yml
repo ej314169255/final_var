@@ -1,0 +1,25 @@
+version: "3"
+services:
+  app:
+    ports:
+      - "127.0.0.1:5000:5000"
+      - "127.0.0.1:5022:22"
+    build:
+      context: ./app
+      dockerfile: Dockerfile_app
+  tester:
+    env_file:
+      - ./test/.env.txt
+    ports:
+      - "127.0.0.1:5021:22"
+    build:
+      context: ./test
+      dockerfile: Dockerfile_tester
+    depends_on:
+      - app
+  solution:
+    build:
+      context: ./s
+      dockerfile: Dockerfile_sel
+    depends_on:
+      - tester
